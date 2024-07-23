@@ -4,6 +4,7 @@ import sqlite3
 import record
 import sqlite3
 import random
+import setings
 
 conn = sqlite3.connect('users.db')
 cur = conn.cursor()
@@ -11,11 +12,8 @@ cur.execute('''CREATE TABLE IF NOT EXISTS users
                      (ID TEXT, login TEXT, balance INTEGER)''')
 conn.commit()
 conn.close()
-# Создание соединения с SQLite3 базой данных
 
- # Создание таблицы
-
-token = "6055757564:AAHWHabIsBJlwTaWVZbhJEhvL2JhH5p40sA"
+token = setings.TOKEN
 bot = telebot.TeleBot(token)
 spin_Status = ''
 status = ''
@@ -65,12 +63,10 @@ def handle_text(message):
         if status_bet == 'bet':
             bet = message.text
             bot.send_message(message.chat.id, 'На что ставим?: ')
-            print(bet) # Проверка ввода
             status_bet = 'input_number'
         elif status_bet == 'input_number':
             global num_people
             num_people = message.text
-            print(num_people) # Проверка ввода
         global num_peopl
         if num_people:
             num = random.randint(0, 36)
@@ -92,10 +88,6 @@ def handle_text(message):
     elif status == 'balance':
         username, balance = record.search('ID', message.chat.id)
         bot.send_message(message.chat.id, f'Ваш баланс: {balance}')
-
-
-
-
 
 if __name__ == '__main__':
     bot.polling()
