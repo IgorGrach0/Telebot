@@ -35,7 +35,7 @@ def spining(message):
     global status
     global status_bet
     global num_people
-    
+
     username, balance = record.search('ID', message.chat.id)
     spin_Status = 'Straight_Up'
     status ='spin'
@@ -79,7 +79,17 @@ def handle_text(message):
                     username, balance = record.search('ID', message.chat.id)
                     bot.send_message(message.chat.id, f'Вы выиграли!Ваш баланс: {balance}')
                     spining(message)
+
+                    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    btn1 = types.KeyboardButton("? Поздороваться")
+                    btn2 = types.KeyboardButton("❓ Задать вопрос")
+                    markup.add(btn1, btn2)
                 else:
+                    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    btn1 = types.KeyboardButton("? Поздороваться")
+                    btn2 = types.KeyboardButton("❓ Задать вопрос")
+                    markup.add(btn1, btn2)
+                    
                     bot.send_message(message.chat.id, f'Вы проиграли! \nВыпало число:: {num} \n Ваш баланс: {balance}')
                     spining(message)
             else:
