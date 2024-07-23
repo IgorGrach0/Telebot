@@ -35,16 +35,19 @@ def spining(message):
     global status
     global status_bet
     global num_people
+    
+    username, balance = record.search('ID', message.chat.id)
     spin_Status = 'Straight_Up'
     status ='spin'
     status_bet = 'bet'
-    bot.send_message(message.chat.id, 'Ставка: ')
+    bot.send_message(message.chat.id, f'Ваш баланс: {balance}\nУкажите размер ставки: ')
     num_people = None
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     global status
     global bet
+    username, balance = record.search('ID', message.chat.id)
     if status == 'login':
         import sqlite3
         b = 10000
@@ -62,7 +65,7 @@ def handle_text(message):
         global num_people
         if status_bet == 'bet':
             bet = message.text
-            bot.send_message(message.chat.id, 'На что ставим?: ')
+            bot.send_message(message.chat.id, 'На что ставим? ')
             status_bet = 'input_number'
         elif status_bet == 'input_number':
             global num_people
@@ -73,11 +76,11 @@ def handle_text(message):
             bet = int(bet)
             if int(num_people) >= 0 and int(num_people) <= 36:
                 if num == int(num_people):
-                    global balance
-                    bot.send_message(message.chat.id, 'Вы выиграли!')
+                    username, balance = record.search('ID', message.chat.id)
+                    bot.send_message(message.chat.id, f'Вы выиграли!Ваш баланс: {balance}')
                     spining(message)
                 else:
-                    bot.send_message(message.chat.id, f'Вы проиграли! \nВыпало число:: {num}')
+                    bot.send_message(message.chat.id, f'Вы проиграли! \nВыпало число:: {num} \n Ваш баланс: {balance}')
                     spining(message)
             else:
                 bot.send_message(message.chat.id, 'Вы ввели неверное значение')
