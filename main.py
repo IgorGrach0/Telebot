@@ -3,6 +3,7 @@ from telebot import types
 import sqlite3
 import record
 import sqlite3
+import random
 
 conn = sqlite3.connect('users.db')
 cur = conn.cursor()
@@ -16,21 +17,36 @@ conn.close()
 
 token = "6055757564:AAHWHabIsBJlwTaWVZbhJEhvL2JhH5p40sA"
 bot = telebot.TeleBot(token)
+spin_Status = ''
+status = ''
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    check = record.search('ID', message.chat.id)
-    if check == True:
-        bot.send_message(message.chat.id, 'Вы уже зарегистрированы')
+    username, balance = record.search('ID', message.chat.id)
+    if username != None:
+        bot.send_message(message.chat.id, f'Добро пожаловать, {username} \nВаш баланс: {balance}')
     else:
         global status
         status = 'login'
         bot.send_message(message.chat.id, 'Вы  ещё не зарегистрированы. \nВведите имя пользователя:')
 
 
+@bot.message_handler(commands=['spin'])
+def spining(message):
+    global spin_Status
+    global status
+    global status_bet
+    global num_people
+    spin_Status = 'Straight_Up'
+    status ='spin'
+    status_bet = 'bet'
+    bot.send_message(message.chat.id, 'Ставка: ')
+    num_people = None
+
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     global status
+    global bet
     if status == 'login':
         import sqlite3
         b = 10000
@@ -43,6 +59,42 @@ def handle_text(message):
         conn.commit()
         conn.close()
         bot.send_message(message.chat.id, 'Вы успешно зарегистрированы')
+    elif status =='spin':
+        global status_bet
+        global num_people
+        if status_bet == 'bet':
+            bet = message.text
+            bot.send_message(message.chat.id, 'На что ставим?: ')
+            print(bet) # Проверка ввода
+            status_bet = 'input_number'
+        elif status_bet == 'input_number':
+            global num_people
+            num_people = message.text
+            print(num_people) # Проверка ввода
+        global num_peopl
+        if num_people:
+            num = random.randint(0, 36)
+            bet = int(bet)
+            if int(num_people) >= 0 and int(num_people) <= 36:
+                if num == int(num_people):
+                    global balance
+                    bot.send_message(message.chat.id, 'Вы выиграли!')
+                    spining(message)
+                else:
+                    bot.send_message(message.chat.id, f'Вы проиграли! \nВыпало число:: {num}')
+                    spining(message)
+            else:
+                bot.send_message(message.chat.id, 'Вы ввели неверное значение')
+                spining(message)
+        elif spin_Status == 'Split ':
+            bot.send_message(message.chat.id, 'Split!')
+
+    elif status == 'balance':
+        username, balance = record.search('ID', message.chat.id)
+        bot.send_message(message.chat.id, f'Ваш баланс: {balance}')
+
+
+
 
 
 if __name__ == '__main__':
