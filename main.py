@@ -6,6 +6,7 @@ import sqlite3
 import random
 import setings
 
+
 conn = sqlite3.connect('users.db')
 cur = conn.cursor()
 cur.execute('''CREATE TABLE IF NOT EXISTS users
@@ -18,9 +19,15 @@ bot = telebot.TeleBot(token)
 spin_Status = ''
 status = ''
 
+
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     username, balance = record.search('ID', message.chat.id)
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton("Поздороваться")
+    btn2 = types.KeyboardButton("Задать вопрос")
+    markup.add(btn1, btn2)
     if username != None:
         bot.send_message(message.chat.id, f'Добро пожаловать, {username} \nВаш баланс: {balance}')
     else:
