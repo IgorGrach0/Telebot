@@ -78,12 +78,14 @@ def handle_text(message):
                 if num == int(num_people):
                     username, balance = record.search('ID', message.chat.id)
                     bot.send_message(message.chat.id, f'Вы выиграли!Ваш баланс: {balance}')
-                    spining(message)
-
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     btn1 = types.KeyboardButton("Поздороваться")
                     btn2 = types.KeyboardButton("Задать вопрос")
+
                     markup.add(btn1, btn2)
+                    spining(message)
+
+
                 else:
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     btn1 = types.KeyboardButton("Поздороваться")
