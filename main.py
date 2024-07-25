@@ -81,13 +81,13 @@ def handle_text(message):
                     spining(message)
 
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    btn1 = types.KeyboardButton("? Поздороваться")
-                    btn2 = types.KeyboardButton("❓ Задать вопрос")
+                    btn1 = types.KeyboardButton("Поздороваться")
+                    btn2 = types.KeyboardButton("Задать вопрос")
                     markup.add(btn1, btn2)
                 else:
                     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    btn1 = types.KeyboardButton("? Поздороваться")
-                    btn2 = types.KeyboardButton("❓ Задать вопрос")
+                    btn1 = types.KeyboardButton("Поздороваться")
+                    btn2 = types.KeyboardButton("Задать вопрос")
                     markup.add(btn1, btn2)
                     
                     bot.send_message(message.chat.id, f'Вы проиграли! \nВыпало число:: {num} \n Ваш баланс: {balance}')
