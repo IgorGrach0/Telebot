@@ -1,6 +1,5 @@
 def Black_or_Red(PeopleColor):
     import random
-
     WinNum = random.randint(0, 36)
     print(WinNum)
     RedNum = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
@@ -12,7 +11,7 @@ def Black_or_Red(PeopleColor):
         WinColor = "Zero"
 
     if WinColor == PeopleColor:
-        print("You Win!")
+        return True, WinNum
     else:
-        print("You Lose!")
-Black_or_Red('Black')
+        return False, WinNum
+print(Black_or_Red('Black'))
