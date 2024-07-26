@@ -24,9 +24,9 @@ status = ''
 @bot.message_handler(commands=['start'])
 def start_message(message):
     username, balance = record.search('ID', message.chat.id)
-    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2)
-    button1 = telebot.types.KeyboardButton('Кнопка 1')
-    button2 = telebot.types.KeyboardButton('Кнопка 2')
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    button1 = telebot.types.KeyboardButton('/start')
+    button2 = telebot.types.KeyboardButton('/spin')
     keyboard.add(button1, button2)
 
     if username != None:
