@@ -24,16 +24,17 @@ status = ''
 @bot.message_handler(commands=['start'])
 def start_message(message):
     username, balance = record.search('ID', message.chat.id)
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = types.KeyboardButton("Поздороваться")
-    btn2 = types.KeyboardButton("Задать вопрос")
-    markup.add(btn1, btn2)
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2)
+    button1 = telebot.types.KeyboardButton('Кнопка 1')
+    button2 = telebot.types.KeyboardButton('Кнопка 2')
+    keyboard.add(button1, button2)
+
     if username != None:
-        bot.send_message(message.chat.id, f'Добро пожаловать, {username} \nВаш баланс: {balance}')
+        bot.send_message(message.chat.id, f'Добро пожаловать, {username} \nВаш баланс: {balance}', reply_markup=keyboard)
     else:
         global status
         status = 'login'
-        bot.send_message(message.chat.id, 'Вы  ещё не зарегистрированы. \nВведите имя пользователя:')
+        bot.send_message(message.chat.id, 'Вы  ещё не зарегистрированы. \nВведите имя пользователя:', reply_markup=keyboard)
 
 
 @bot.message_handler(commands=['spin'])
