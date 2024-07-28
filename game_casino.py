@@ -14,4 +14,3 @@ def Black_or_Red(PeopleColor):
         return True, WinNum
     else:
         return False, WinNum
-print(Black_or_Red('Black'))
