@@ -71,6 +71,10 @@ def handle_text(message):
         conn.commit()
         conn.close()
         bot.send_message(message.chat.id, 'Вы успешно зарегистрированы')
+
+    elif status == 'spin_color':
+        global status_bet
+        global color_people
     elif status =='spin':
         global status_bet
         global num_people
