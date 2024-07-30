@@ -21,6 +21,7 @@ bot = telebot.TeleBot(token)
 spin_Status = ''
 status = ''
 
+
 @bot.message_handler(commands=['start'])
 def start_message(message):
     username, balance = record.search('ID', message.chat.id)
@@ -43,12 +44,20 @@ def spining(message):
     global status
     global status_bet
     global num_people
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    button1 = telebot.types.KeyboardButton('50')
+    button2 = telebot.types.KeyboardButton('100')
+    button3 = telebot.types.KeyboardButton('200')
+    button4 = telebot.types.KeyboardButton('500')
+    button5 = telebot.types.KeyboardButton('1000')
+    keyboard.add(button1, button2, button3, button4, button5)
 
     username, balance = record.search('ID', message.chat.id)
     spin_Status = 'Straight_Up'
     status ='spin'
     status_bet = 'bet'
-    bot.send_message(message.chat.id, f'Ваш баланс: {balance}\nУкажите размер ставки: ')
+
+    bot.send_message(message.chat.id, f'Ваш баланс: {balance}\nУкажите размер ставки: ', reply_markup=keyboard)
     num_people = None
 
 @bot.message_handler(content_types=['text'])
@@ -76,8 +85,14 @@ def handle_text(message):
         global status_bet
         global num_people
         if status_bet == 'bet':
+            keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+            button1 = telebot.types.KeyboardButton('Red')
+            button2 = telebot.types.KeyboardButton('Black')
+            button3 = telebot.types.KeyboardButton('Zero')
+            keyboard.add(button1, button2, button3)
+
             bet = message.text
-            bot.send_message(message.chat.id, 'На что ставим? ')
+            bot.send_message(message.chat.id, 'На что ставим? ', reply_markup=keyboard)
             status_bet = 'input_number'
         elif status_bet == 'input_number':
             global num_people
