@@ -92,7 +92,6 @@ def handle_text(message):
                     username, balance = record.search('ID', message.chat.id)
                     bot.send_message(message.chat.id, f'Вы выиграли!\nВаш баланс: {balance}')
                     spining(message)
-
                 else:
                     bot.send_message(message.chat.id, f'Вы проиграли!\nВыпало число:: {win_Number}, {WIN_COLOR}\nВаш баланс: {balance}')
                     spining(message)
