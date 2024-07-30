@@ -9,7 +9,6 @@ import sqlite3
 import random
 import setings
 
-
 conn = sqlite3.connect('users.db')
 cur = conn.cursor()
 cur.execute('''CREATE TABLE IF NOT EXISTS users
@@ -21,8 +20,6 @@ token = setings.TOKEN
 bot = telebot.TeleBot(token)
 spin_Status = ''
 status = ''
-
-
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
@@ -94,8 +91,6 @@ def handle_text(message):
                     username, balance = record.search('ID', message.chat.id)
                     bot.send_message(message.chat.id, f'Вы выиграли!Ваш баланс: {balance}')
                     spining(message)
-
-
                 else:
                     bot.send_message(message.chat.id, f'Вы проиграли! \nВыпало число:: {num} \n Ваш баланс: {balance}')
                     spining(message)
