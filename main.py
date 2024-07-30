@@ -82,17 +82,19 @@ def handle_text(message):
         elif status_bet == 'input_number':
             global num_people
             num_people = message.text
-        global num_peopl
+
         if num_people:
-            num = random.randint(0, 36)
-            bet = int(bet)
-            if int(num_people) >= 0 and int(num_people) <= 36:
-                if num == int(num_people):
+            '''num = random.randint(0, 36)'''
+            num_people = num_people.lower()
+            win_color, win_Number, WIN_COLOR = game_casino.Black_or_Red(num_people)
+            if num_people == 'red' or num_people == 'black' or num_people == 'zero':
+                if win_color == True:
                     username, balance = record.search('ID', message.chat.id)
-                    bot.send_message(message.chat.id, f'Вы выиграли!Ваш баланс: {balance}')
+                    bot.send_message(message.chat.id, f'Вы выиграли!\nВаш баланс: {balance}')
                     spining(message)
+
                 else:
-                    bot.send_message(message.chat.id, f'Вы проиграли! \nВыпало число:: {num} \n Ваш баланс: {balance}')
+                    bot.send_message(message.chat.id, f'Вы проиграли!\nВыпало число:: {win_Number}, {WIN_COLOR}\nВаш баланс: {balance}')
                     spining(message)
             else:
                 bot.send_message(message.chat.id, 'Вы ввели неверное значение')
