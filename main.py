@@ -36,8 +36,16 @@ def start_message(message):
         status = 'login'
         bot.send_message(message.chat.id, 'Вы  ещё не зарегистрированы. \nВведите имя пользователя:', reply_markup=keyboard)
 
-
 @bot.message_handler(commands=['spin'])
+def spin(message):
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    button1 = telebot.types.KeyboardButton('/spin_color')
+    button2 = telebot.types.KeyboardButton('/spin_number')
+    button3 = telebot.types.KeyboardButton('/spin_sector')
+    keyboard.add(button1, button2, button3)
+    bot.send_message(message.chat.id, '',reply_markup=keyboard)
+
+@bot.message_handler(commands=['spin_color'])
 def spining(message):
     global spin_Status
     global status
@@ -53,7 +61,7 @@ def spining(message):
 
     username, balance = record.search('ID', message.chat.id)
     spin_Status = 'Straight_Up'
-    status ='spin'
+    status ='spin_number'
     status_bet = 'bet'
 
     bot.send_message(message.chat.id, f'Ваш баланс: {balance}\nУкажите размер ставки: ', reply_markup=keyboard)
@@ -80,9 +88,57 @@ def handle_text(message):
     elif status == 'spin_color':
         global status_bet
         global color_people
-    elif status =='spin':
+
+    elif status =='spin_number':
         global status_bet
         global num_people
+        if status_bet == 'bet':
+            markup = types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton('1', callback_data='1'))
+            markup.add(types.InlineKeyboardButton('2', callback_data='2'))
+            markup.add(types.InlineKeyboardButton('3', callback_data='3'))
+            markup.add(types.InlineKeyboardButton('4', callback_data='4'))
+            markup.add(types.InlineKeyboardButton('5', callback_data='5'))
+            markup.add(types.InlineKeyboardButton('6', callback_data='6'))
+            markup.add(types.InlineKeyboardButton('7', callback_data='7'))
+            markup.add(types.InlineKeyboardButton('8', callback_data='8'))
+            markup.add(types.InlineKeyboardButton('9', callback_data='9'))
+            markup.add(types.InlineKeyboardButton('10', callback_data='10'))
+            markup.add(types.InlineKeyboardButton('11', callback_data='11'))
+            markup.add(types.InlineKeyboardButton('12', callback_data='12'))
+            markup.add(types.InlineKeyboardButton('13', callback_data='13'))
+            markup.add(types.InlineKeyboardButton('14', callback_data='14'))
+            markup.add(types.InlineKeyboardButton('15', callback_data='15'))
+            markup.add(types.InlineKeyboardButton('16', callback_data='16'))
+            markup.add(types.InlineKeyboardButton('17', callback_data='17'))
+            markup.add(types.InlineKeyboardButton('18', callback_data='18'))
+            markup.add(types.InlineKeyboardButton('19', callback_data='19'))
+            markup.add(types.InlineKeyboardButton('20', callback_data='20'))
+            markup.add(types.InlineKeyboardButton('21', callback_data='21'))
+            markup.add(types.InlineKeyboardButton('22', callback_data='22'))
+            markup.add(types.InlineKeyboardButton('23', callback_data='23'))
+            markup.add(types.InlineKeyboardButton('24', callback_data='24'))
+            markup.add(types.InlineKeyboardButton('25', callback_data='25'))
+            markup.add(types.InlineKeyboardButton('26', callback_data='26'))
+            markup.add(types.InlineKeyboardButton('27', callback_data='27'))
+            markup.add(types.InlineKeyboardButton('28', callback_data='28'))
+            markup.add(types.InlineKeyboardButton('29', callback_data='29'))
+            markup.add(types.InlineKeyboardButton('30', callback_data='30'))
+            markup.add(types.InlineKeyboardButton('31', callback_data='31'))
+            markup.add(types.InlineKeyboardButton('32', callback_data='32'))
+            markup.add(types.InlineKeyboardButton('33', callback_data='33'))
+            markup.add(types.InlineKeyboardButton('34', callback_data='34'))
+            markup.add(types.InlineKeyboardButton('35', callback_data='35'))
+            markup.add(types.InlineKeyboardButton('36', callback_data='36'))
+
+            bot.send_message(message.chat.id, 'Выберите число', reply_markup=markup)
+
+            status_bet = 'input_number'
+        elif status_bet == 'input_number':
+            global num_people
+            num_people = int(message.text)
+
+    elif status =='spin_color':
         if status_bet == 'bet':
             keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
             button1 = telebot.types.KeyboardButton('Red')
@@ -94,7 +150,6 @@ def handle_text(message):
             bot.send_message(message.chat.id, 'На что ставим? ', reply_markup=keyboard)
             status_bet = 'input_number'
         elif status_bet == 'input_number':
-            global num_people
             num_people = message.text
 
         if num_people:
