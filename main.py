@@ -21,7 +21,6 @@ bot = telebot.TeleBot(token)
 spin_Status = ''
 status = ''
 
-
 @bot.message_handler(commands=['start'])
 def start_message(message):
     username, balance = record.search('ID', message.chat.id)
@@ -99,7 +98,6 @@ def handle_text(message):
             num_people = message.text
 
         if num_people:
-            '''num = random.randint(0, 36)'''
             num_people = num_people.lower()
             win_color, win_Number, WIN_COLOR = game_casino.Black_or_Red(num_people)
             if num_people == 'red' or num_people == 'black' or num_people == 'zero':
