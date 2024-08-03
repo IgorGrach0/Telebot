@@ -15,3 +15,11 @@ def Black_or_Red(PeopleColor):
         return True, WinNum, WinColor_return
     else:
         return False, WinNum, WinColor_return
+
+def number_game(People_number):
+    import random
+    WinNum = random.randint(0, 36)
+    if WinNum == People_number:
+        return True, WinNum
+    else:
+        return False, WinNum

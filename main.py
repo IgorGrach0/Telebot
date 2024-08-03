@@ -61,12 +61,46 @@ def spining(message):
 
     username, balance = record.search('ID', message.chat.id)
     spin_Status = 'Straight_Up'
+    status ='spin_color'
+    status_bet = 'bet'
+
+    bot.send_message(message.chat.id, f'Ваш баланс: {balance}\nУкажите размер ставки: ', reply_markup=keyboard)
+    num_people = None
+
+@bot.message_handler(commands=['spin_number'])
+def spin_number(message):
+    global spin_Status
+    global status
+    global status_bet
+    global num_people
+    keyboard = telebot.types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    button1 = telebot.types.KeyboardButton('50')
+    button2 = telebot.types.KeyboardButton('100')
+    button3 = telebot.types.KeyboardButton('200')
+    button4 = telebot.types.KeyboardButton('500')
+    button5 = telebot.types.KeyboardButton('1000')
+    keyboard.add(button1, button2, button3, button4, button5)
+
+    username, balance = record.search('ID', message.chat.id)
+    spin_Status = 'Straight_Up'
     status ='spin_number'
     status_bet = 'bet'
 
     bot.send_message(message.chat.id, f'Ваш баланс: {balance}\nУкажите размер ставки: ', reply_markup=keyboard)
     num_people = None
 
+@bot.callback_query_handler(func=lambda call: True)
+def callback_worker(call):
+    if int(call.data) >= 0 and int(call.data) <= 36:
+        num_people = int(call.data)
+        result, Win_num = game_casino.number_game(num_people)
+        username, balance = record.search('ID', call.message.chat.id)
+        if result == True:
+            bot.send_message(call.message.chat.id, f'Вы выиграли!\nВаш баланс: {balance}')
+        else:
+            bot.send_message(call.message.chat.id, f'Вы проиграли!\nВыпало число:: {Win_num},\nВаш баланс: {balance}')
+
+        spin_number(call.message)
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     global status
@@ -85,12 +119,12 @@ def handle_text(message):
         conn.close()
         bot.send_message(message.chat.id, 'Вы успешно зарегистрированы')
 
-
     elif status =='spin_number':
         global status_bet
         global num_people
         if status_bet == 'bet':
             markup = types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton('0', callback_data='0'))
             markup.add(types.InlineKeyboardButton('1', callback_data='1'))
             markup.add(types.InlineKeyboardButton('2', callback_data='2'))
             markup.add(types.InlineKeyboardButton('3', callback_data='3'))
@@ -127,13 +161,8 @@ def handle_text(message):
             markup.add(types.InlineKeyboardButton('34', callback_data='34'))
             markup.add(types.InlineKeyboardButton('35', callback_data='35'))
             markup.add(types.InlineKeyboardButton('36', callback_data='36'))
-
             bot.send_message(message.chat.id, 'Выберите число', reply_markup=markup)
 
-            status_bet = 'input_number'
-        elif status_bet == 'input_number':
-            global num_people
-            num_people = int(message.text)
 
     elif status =='spin_color':
         if status_bet == 'bet':
