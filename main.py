@@ -43,7 +43,7 @@ def spin(message):
     button2 = telebot.types.KeyboardButton('/spin_number')
     button3 = telebot.types.KeyboardButton('/spin_sector')
     keyboard.add(button1, button2, button3)
-    bot.send_message(message.chat.id, '',reply_markup=keyboard)
+    bot.send_message(message.chat.id, 'Выберите режим',reply_markup=keyboard)
 
 @bot.message_handler(commands=['spin_color'])
 def spining(message):
@@ -85,9 +85,6 @@ def handle_text(message):
         conn.close()
         bot.send_message(message.chat.id, 'Вы успешно зарегистрированы')
 
-    elif status == 'spin_color':
-        global status_bet
-        global color_people
 
     elif status =='spin_number':
         global status_bet
