@@ -91,7 +91,9 @@ def spin_number(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
-    if int(call.data) >= 0 and int(call.data) <= 36:
+    if call.data == 'Cancel':
+        spin(call.message)
+    elif int(call.data) >= 0 and int(call.data) <= 36:
         num_people = int(call.data)
         result, Win_num = game_casino.number_game(num_people)
         username, balance = record.search('ID', call.message.chat.id)
@@ -137,6 +139,7 @@ def handle_text(message):
             markup.add(types.InlineKeyboardButton('28', callback_data='28'), types.InlineKeyboardButton('29', callback_data='29'), types.InlineKeyboardButton('30', callback_data='30'))
             markup.add(types.InlineKeyboardButton('31', callback_data='31'), types.InlineKeyboardButton('32', callback_data='32'), types.InlineKeyboardButton('33', callback_data='33'))
             markup.add(types.InlineKeyboardButton('34', callback_data='34'), types.InlineKeyboardButton('35', callback_data='35'), types.InlineKeyboardButton('36', callback_data='36'))
+            markup.add(types.InlineKeyboardButton('Cancel', callback_data='Cancel'))
 
             bot.send_message(message.chat.id, 'Выберите число', reply_markup=markup)
 
