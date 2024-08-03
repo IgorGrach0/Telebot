@@ -23,3 +23,11 @@ def number_game(People_number):
         return True, WinNum
     else:
         return False, WinNum
+
+def sector_game(People_sector):
+    import random
+    WinNum = random.randint(0, 3)
+    if WinNum in People_sector:
+        return True, WinNum
+    else:
+        return False, WinNum
